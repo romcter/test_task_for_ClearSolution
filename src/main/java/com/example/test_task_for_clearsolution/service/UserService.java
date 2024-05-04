@@ -21,8 +21,8 @@ public class UserService {
         return userMapper.entityToDto(userStorage.getByEmail(email));
     }
 
-    public void delete(String email) {
-        userStorage.delete(email);
+    public boolean delete(String email) {
+        return userStorage.delete(email);
     }
 
     public UserFullDto register(UserFullDto userDto) {
