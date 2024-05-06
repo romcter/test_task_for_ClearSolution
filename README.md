@@ -1,5 +1,12 @@
-[Built CI/CD pipeline using AWS](http://cicdloadbalancerforclearsolution-1448649788.eu-north-1.elb.amazonaws.com/swagger-ui/index.html#/)
-![img.png](img.png)
+### Built CI/CD pipeline trigger by push commit [link](http://cicdloadbalancerforclearsolution-1448649788.eu-north-1.elb.amazonaws.com/swagger-ui/index.html#/)
+#### Swagger
+![swagger.png](swagger.png)
+
+#### Triggered pipeline by git commit
+![triggered_pipeline.png](triggered_pipeline.png)
+
+#### Finished pipeline
+![finnished_cicd.png](finnished_cicd.png)
 
 Technical requirement
 
