@@ -47,3 +47,10 @@ Requirements:
 Please note:
 we assess only those assignments where all requirements are implemented
 ```
+
+
+Run Jenkins instance - ```docker-compose up -d```
+
+Get password - ```docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword```
+
+Select `Install Suggested Plugins` on the next page. When Jenkins finishes, it will prompt you for a new admin user and password. Enter a user name and password and click Save and Continue.
