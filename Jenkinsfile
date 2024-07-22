@@ -14,6 +14,10 @@ pipeline {
         stage('Building our image') {
             steps{
                 script {
+                    sh 'docker ps'
+                    sh 'docker inspect'
+                    sh './gradlew -version'
+
                     dockerImage = docker.build registry + ":$BUILD_NUMBER"
                 }
             }
