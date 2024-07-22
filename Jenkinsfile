@@ -1,39 +1,39 @@
 pipeline {
-environment {
-registry = "romcter/test_task"
-registryCredential = 'dockerhub_id'
-dockerImage = ''
-}
-agent any
-stages {
-stage('Cloning our Git') {
-steps {
-git 'https://github.com/romcter/test_task_for_ClearSolution.git'
-}
-}
-stage('Building our image') {
-steps{
-script {
-dockerImage = docker.build registry + ":$BUILD_NUMBER"
-}
-}
-}
-    stage('Deploy our image') {
-steps{
-    script {
-        docker.withRegistry( '', registryCredential ) {
-        dockerImage.push()
+    environment {
+        registry = "romcter/test_task"
+        registryCredential = 'dockerhub_id'
+        dockerImage = ''
     }
-    }
-    }
+    agent any
+    stages {
+        stage('Cloning our Git') {
+            steps {
+                git 'https://github.com/romcter/test_task_for_ClearSolution.git'
+            }
         }
-        stage('Cleaning up') {
+        stage('Building our image') {
             steps{
-                sh "docker rmi $registry:$BUILD_NUMBER"
+                script {
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                }
+            }
+        }
+        stage('Deploy our image') {
+            steps{
+                script {
+                    docker.withRegistry( '', registryCredential ) {
+                    dockerImage.push()
+                }
             }
         }
     }
+    stage('Cleaning up') {
+        steps{
+            sh "docker rmi $registry:$BUILD_NUMBER"
+        }
+    }
 }
+// }
 
 
 // pipeline {
