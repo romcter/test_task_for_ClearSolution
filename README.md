@@ -54,3 +54,61 @@ Run Jenkins instance - ```docker-compose up -d```
 Get password - ```docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword```
 
 Select `Install Suggested Plugins` on the next page. When Jenkins finishes, it will prompt you for a new admin user and password. Enter a user name and password and click Save and Continue.
+
+
+
+# Pre-requirements:
+ - Create EC2 instance (AIM should be `Amazon Linux 2 AMI (HVM) - Kernel 5.10, SSD Volume Type)` with security group (tcp 22, 80, 8080 to `0.0.0.0/0`)
+ - Connect to EC2 by SSH
+
+# Command
+
+### Install Jenkins to 
+I faced with error `The name org.freedesktop.PolicyKit1 was not provided by any .service files` long time but next order of command install jenkins (make sure that it works for clear and new EC2 instance)  
+
+Update the installed packages and package cache on your instance.
+`sudo yum update -y`
+
+`sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo`
+
+`sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key`
+
+`sudo yum install java-17-amazon-corretto`
+
+`sudo yum install polkit`
+
+`sudo yum install jenkins`
+
+`sudo service jenkins start`
+
+### Install Git
+
+`sudo yum install git`
+
+Execute `which git`, copy result and go to `Manage Jenkins` -> `Tools` -> `Git installations` -> `Path to Git executable` paste result
+
+### Install Docker to EC2 AWS instance
+
+Install the most recent Docker Community Edition package.
+
+`
+sudo amazon-linux-extras install docker
+`
+
+Start the Docker service.
+
+`sudo service docker start`
+
+Add the ec2-user to the docker group so you can execute Docker commands without using sudo.
+
+`sudo usermod -a -G docker ec2-user`
+
+Log out and log back in again to pick up the new docker group permissions. You can accomplish this by closing your current SSH terminal window and reconnecting to your instance in a new one. Your new SSH session will have the appropriate docker group permissions.
+
+Verify that the ec2-user can run Docker commands without sudo.
+
+`docker info`
+
+### Work with Jenkins
+Get password for authorization
+`sudo cat /var/lib/jenkins/secrets/initialAdminPassword`

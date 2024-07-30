@@ -1,25 +1,28 @@
-FROM gradle:8.7-jdk17 AS TEMP_BUILD_IMAGE
-ENV APP_HOME=/usr/app/
-WORKDIR $APP_HOME
-COPY build.gradle settings.gradle $APP_HOME
-
-COPY gradle $APP_HOME/gradle
-COPY --chown=gradle:gradle . /home/gradle/src
-USER root
-RUN chown -R gradle /home/gradle/src
-
-RUN gradle build || return 0
-COPY . .
-RUN gradle clean build
-
-# actual container
-FROM openjdk:17-oracle
+## Use the official Gradle image to build the app
+#FROM gradle:7.6.0-jdk17 AS build
+#
+## Set the working directory
+#WORKDIR /test_task_for_ClearSolution
+#
+## Copy the Gradle wrapper and project files
+#COPY gradle ./gradle
+#COPY gradlew .
+#COPY build.gradle .
+#COPY settings.gradle .
+#
+## Download dependencies
+##RUN ./gradlew build --no-daemon -x test
+#
+## Copy the application source code
+#COPY src ./src
+#
+## Build the application
+#RUN ./gradlew build
+##
+FROM amazoncorretto:17-alpine-jdk
 ENV ARTIFACT_NAME=test_task_for_ClearSolution-0.0.1-SNAPSHOT.jar
-ENV APP_HOME=/usr/app/
+ENV TEMP_BUILD_IMAGE=/build/libs/test_task_for_ClearSolution-0.0.1-SNAPSHOT.jar
 
-WORKDIR $APP_HOME
-COPY --from=TEMP_BUILD_IMAGE $APP_HOME/build/libs/$ARTIFACT_NAME .
-
-EXPOSE 8080
+COPY $TEMP_BUILD_IMAGE $ARTIFACT_NAME
+EXPOSE 8081
 ENTRYPOINT exec java -jar ${ARTIFACT_NAME}
-
