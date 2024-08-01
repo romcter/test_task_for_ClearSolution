@@ -1,0 +1,59 @@
+version: '3.8'
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    privileged: true
+    user: root
+    ports:
+      - 8080:8080
+      - 50000:50000
+    container_name: jenkins
+    volumes:
+      - /Users/rpryimuk/IdeaProjects/test_task_for_ClearSolution/jenkins_compose/jenkins_configuration:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - jenkins_home:/var/jenkins_home
+    networks:
+      - jenkins_network
+
+  docker:
+    image: docker:latest
+    container_name: docker
+    privileged: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker
+    networks:
+      - jenkins_network
+
+volumes:
+  jenkins_home:
+
+networks:
+  jenkins_network:
+
+#services:
+#  jenkins:
+#    image: jenkins/jenkins:lts
+#    container_name: jenkins
+#    ports:
+#      - "8080:8080"
+#      - "50000:50000"
+#    volumes:
+#      - jenkins_home:/var/jenkins_home
+#
+#
+#  docker:
+#    image: docker:latest
+#    container_name: docker
+#    privileged: true
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock
+#      - /usr/bin/docker:/usr/bin/docker
+#    networks:
+#      - jenkins_network
+#
+#volumes:
+#  jenkins_home:
+#
+#networks:
+#  jenkins_network:

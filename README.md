@@ -48,6 +48,13 @@ Please note:
 we assess only those assignments where all requirements are implemented
 ```
 
+### Run app locally
+
+`docker build -t romcter/test_task .`
+
+`docker run -p 8081:8081 romcter/test_task`
+
+### Run Jenkins locally
 
 Run Jenkins instance - ```docker-compose up -d```
 
