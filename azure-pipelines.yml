@@ -8,12 +8,12 @@ pr:
 pool:
   vmImage: ubuntu-latest
 
-resources:
-  repositories:
-    - repository: templates
-      type: git
-      ref: main
-      name: TestTast/TaskTest
+#resources:
+#  repositories:
+#    - repository: templates
+#      type: git
+#      ref: main
+#      name: TestTast/TaskTest
 
 steps:
   - task: Gradle@2
