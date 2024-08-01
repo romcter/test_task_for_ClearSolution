@@ -1,19 +1,44 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
-- master
+  - master
+pr:
+  branches:
+    exclude:
+      - '*'
 
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+resources:
+  repositories:
+    - repository: templates
+      type: git
+      ref: main
+      name: TestTast/TaskTest
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+steps:
+  - task: Gradle@2
+    inputs:
+      workingDirectory: ''
+      gradleWrapperFile: 'gradlew'
+      gradleOptions: '-Xmx3072m'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '17'
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: true
+      testResultsFiles: '**/TEST-*.xml'
+      tasks: 'build'
+#
+#stages:
+#  - stage: build
+#    displayName: Build
+#
+#    jobs:
+#      - job: gradle_build_deploy
+#        displayName: 'Maven Build/Deploy'
+#
+#        steps:
+#          - template: /build/gradle-build.yaml@templates
+#
+#          - template: build/deploy-spring-apps.yaml@templates
+#            parameters:
+#              appName: 'payment-service'
